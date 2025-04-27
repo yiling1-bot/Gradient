@@ -1,6 +1,6 @@
 # 用梯度求给定函数的极大极小值的python实现
 ## author:yiling1-bot
-## last update:2024.04.28
+## last update:2024.04.27
 #### -------以下是项目的说明和前置要求-------
 该项目利用python实现了用梯度求给定函数的极大极小值
 **请注意，在使用该项目之前，请确保您的python环境正常，且已经安装了numpy和matplotlib库。**
