@@ -22,8 +22,7 @@ pip install matplotlib
 
 - 2.请注意，**函数的输入形式必须是一个完整的函数定义表达式**，例如：
 ```python
-def f(x):
-    return x[0]**2 + x[1]**2 + x[2]**2
+def objective_function(x): return (x - 2)**2）
 ```
 而不能是：
 ```python
