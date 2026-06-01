@@ -1,40 +1,39 @@
-# Gradient Edu
+# Gradient
 
-Gradient Edu is an early-stage educational Python project for learning
-gradient-based optimization. It provides small, readable implementations of
-gradient descent, finite-difference gradients, examples, and tests.
+Gradient is a beginner-friendly Python project for learning gradient-based
+optimization with small, readable examples.
 
-This repository is intended for students and beginners. The goal is clarity
-over performance.
+## Why This Project Exists
 
-## Project Status
+This project started as a learning script for exploring how gradients can be
+used to find minimum and maximum values of functions. It is now organized as a
+small educational Python package so students can read the code, run examples,
+and write tests without dealing with unnecessary framework complexity.
 
-This is an early-stage learning project. The current focus is:
+Gradient is not a production optimization library. It is an educational project
+for understanding the basics.
 
-- safer function handling without `eval()`
-- a small Python package structure
-- runnable examples
-- unit tests
-- beginner-friendly documentation
+## Features
 
-## Why No `eval()`?
-
-The original learning script accepted user-entered function strings and used
-`eval()` to turn them into Python functions. That is unsafe because arbitrary
-input can execute arbitrary Python code.
-
-This version does not evaluate raw user input. The public API accepts Python
-callables, and the command line interface runs only built-in examples.
+- Basic gradient descent for minimization.
+- Basic gradient ascent for maximization.
+- Numerical gradients using central finite differences.
+- Callable-based API with no raw `eval()` of user input.
+- Beginner-friendly examples for one-dimensional, two-dimensional, and
+  Rosenbrock functions.
+- Pytest-based test suite.
 
 ## Installation
 
-From the repository root:
+Clone the repository and install it locally:
 
 ```bash
-pip install -e ".[test,plot]"
+git clone https://github.com/yiling1-bot/Gradient.git
+cd Gradient
+pip install -e ".[test]"
 ```
 
-For the minimal package:
+For the minimal package only:
 
 ```bash
 pip install -e .
@@ -45,71 +44,97 @@ pip install -e .
 ```python
 import numpy as np
 
-from gradient_edu import gradient_descent
+from gradient_optimizer import gradient_descent
 
 
-def bowl(x: np.ndarray) -> float:
-    return float((x[0] - 3.0) ** 2)
+def objective(x: np.ndarray) -> float:
+    return float((x[0] - 2.0) ** 2)
+
+
+def gradient(x: np.ndarray) -> np.ndarray:
+    return np.array([2.0 * (x[0] - 2.0)])
 
 
 result = gradient_descent(
-    objective=bowl,
+    objective,
     start=[0.0],
+    gradient=gradient,
     learning_rate=0.1,
-    max_steps=200,
+    max_iterations=200,
 )
 
 print(result.point)
 print(result.value)
 ```
 
-## Command Line
-
-Run a built-in one-dimensional quadratic example:
-
-```bash
-gradient-edu quadratic-1d
-```
-
-Run a two-dimensional example:
-
-```bash
-gradient-edu quadratic-2d
-```
-
 ## Examples
 
-Examples are stored in `examples/`:
-
-- `quadratic_1d.py`
-- `quadratic_2d.py`
-
-## Tests
+Run examples from the repository root:
 
 ```bash
+python examples/quadratic_1d.py
+python examples/quadratic_2d.py
+python examples/rosenbrock.py
+```
+
+## Testing
+
+Install test dependencies and run pytest:
+
+```bash
+pip install -e ".[test]"
 pytest
 ```
 
-## Suggested Small Commits
+The GitHub Actions workflow also runs tests on Python 3.10, 3.11, and 3.12 for
+pushes and pull requests.
 
-1. `docs: add license and project metadata`
-2. `refactor: introduce gradient_edu package`
-3. `security: remove eval-based function loading`
-4. `test: add optimizer unit tests`
-5. `docs: rewrite README for educational use`
-6. `examples: add runnable optimization examples`
-7. `feat: add simple command line interface`
-8. `chore: prepare v0.1.0 release notes`
+## Safety Note
+
+This project does not use raw `eval()` on user input. Evaluating arbitrary user
+strings can execute arbitrary Python code, including imports, file access, or
+other unwanted actions.
+
+The safer design is:
+
+- users pass Python callables directly;
+- examples define objective functions normally in code;
+- future expression-string support should use a restricted parser, not raw
+  `eval()`.
+
+## Project Structure
+
+```text
+src/gradient_optimizer/
+  __init__.py       Public package exports
+  core.py           gradient_descent, gradient_ascent, numerical_gradient
+  examples.py       Reusable educational objective functions
+  cli.py            Small command line interface for built-in examples
+examples/           Runnable beginner examples
+tests/              Pytest test suite
+.github/            CI workflow and collaboration templates
+```
 
 ## Roadmap
 
-- Add more educational examples.
-- Add optional plotting helpers.
-- Add a safe expression parser based on an AST allowlist.
-- Add type checking and linting.
-- Publish a `v0.1.0` GitHub release.
+- Add more beginner examples.
+- Add optional plotting examples.
+- Add a restricted expression parser for safe math expressions.
+- Add more explanation pages for numerical gradients and convergence.
+- Prepare small educational releases as the project grows.
 
 ## Contributing
 
-Contributions are welcome. Please keep changes small, readable, and focused on
-education.
+Contributions are welcome. This is a small educational project, so good
+contributions are usually small and clear:
+
+- improve comments or documentation;
+- add a beginner-friendly example;
+- add or improve tests;
+- simplify code without hiding the math.
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).

@@ -1,11 +1,11 @@
 # Contributing
 
-Thank you for improving Gradient Edu.
+Thank you for improving Gradient.
 
 ## Development Setup
 
 ```bash
-pip install -e ".[test,plot]"
+pip install -e ".[test]"
 pytest
 ```
 
